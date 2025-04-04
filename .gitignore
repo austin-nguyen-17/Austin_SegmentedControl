@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+/gradle/wrapper/gradle-wrapper.jar
+/gradle/wrapper/gradle-wrapper.properties
+/.idea/misc.xml
+/.idea/vcs.xml
+/.kotlin/errors/

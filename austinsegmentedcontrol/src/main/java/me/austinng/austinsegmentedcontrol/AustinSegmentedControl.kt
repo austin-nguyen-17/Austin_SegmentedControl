@@ -35,7 +35,7 @@ import androidx.compose.ui.util.fastZip
 fun SegmentedControl(
     modifier: Modifier = Modifier,
     segmentedButtonProperties: SegmentedButtonProperties = SegmentedButtonPropertiesDefault.colors(),
-    alignItem: SegmentedControlAlignItem = SegmentedControlAlignItem.EQUAL_WIDTH,
+    alignItem: SegmentedControlAlignItem = SegmentedControlAlignItem.AUTO_ALIGN,
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
     items: List<SegmentedControlItem>,
