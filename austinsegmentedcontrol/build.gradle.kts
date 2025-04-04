@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id ("maven-publish")
+    id("maven-publish")
 }
 
 android {
@@ -35,6 +35,11 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+        }
+    }
 }
 
 dependencies {
@@ -42,25 +47,23 @@ dependencies {
     implementation(libs.androidx.foundation.android)
 }
 
-afterEvaluate {
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "io.github.austinng17"
+            artifactId = "austinsegmentedcontrol"
+            version = "0.0.1"
 
-    publishing {
-        publications {
-            register<MavenPublication>("release") {
-                groupId = "io.github.austinng17"
-                artifactId = "austinsegmentedcontrol"
-                version = "0.0.1"
-
-                afterEvaluate {
-                    from(components["release"])
-                }
-            }
-        }
-
-        repositories {
-            maven {
-                url = uri("https://jitpack.io")
+            afterEvaluate {
+                from(components["release"])
             }
         }
     }
+
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
 }
+
