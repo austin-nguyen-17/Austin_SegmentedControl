@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id ("maven-publish")
 }
 
 android {
@@ -39,4 +40,24 @@ android {
 dependencies {
     implementation(libs.androidx.animation.core.android)
     implementation(libs.androidx.foundation.android)
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "io.github.austinng17"
+            artifactId = "austinsegmentedcontrol"
+            version = "0.0.1"
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
+
+    repositories {
+        maven {
+            url = uri("https://jitpack.io")
+        }
+    }
 }
