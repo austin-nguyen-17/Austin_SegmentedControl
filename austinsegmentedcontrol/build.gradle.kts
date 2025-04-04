@@ -47,12 +47,13 @@ dependencies {
     implementation(libs.androidx.foundation.android)
 }
 
+
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "io.github.austinng17"
             artifactId = "austinsegmentedcontrol"
-            version = "0.0.6"
+            version = "0.0.9"
 
             afterEvaluate {
                 from(components["release"])
