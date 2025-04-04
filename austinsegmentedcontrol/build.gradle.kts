@@ -29,11 +29,11 @@ android {
         compose = true
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
     }
     publishing {
         singleVariant("release") {
@@ -52,7 +52,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.austinng17"
             artifactId = "austinsegmentedcontrol"
-            version = "0.0.5"
+            version = "0.0.6"
 
             afterEvaluate {
                 from(components["release"])
