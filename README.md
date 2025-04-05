@@ -79,9 +79,9 @@ object SegmentedButtonPropertiesDefault {
 
 ## Contributing
 
-Feel free to contribute by submitting issues or pull requests. And please ensure that all pull requests are checked out from the `master` branch.
+Feel free to contribute by submitting issues or pull requests. And please ensure that all pull requests are checked out from the `main` branch.
 
 ## License
 
-Austin Tab is licensed under the MIT License.
+Austin SegmentedControl is licensed under the MIT License.
 
