@@ -46,7 +46,7 @@ maven { url 'https://jitpack.io' }
 
 ```
 dependencies {
-	implementation 'com.github.austin17ng:Austin_SegmentedControl:0.0.10'
+	implementation 'com.github.austin17ng:Austin_SegmentedControl:0.0.11'
 }
 ```
  
