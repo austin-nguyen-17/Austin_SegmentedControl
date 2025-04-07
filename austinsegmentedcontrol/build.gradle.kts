@@ -51,9 +51,9 @@ dependencies {
 publishing {
     publications {
         register<MavenPublication>("release") {
-            groupId = "io.github.austinng17"
+            groupId = "io.github.austin17ng"
             artifactId = "austinsegmentedcontrol"
-            version = "0.0.9"
+            version = "0.0.10"
 
             afterEvaluate {
                 from(components["release"])
