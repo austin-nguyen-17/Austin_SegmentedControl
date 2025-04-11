@@ -81,6 +81,10 @@ object SegmentedButtonPropertiesDefault {
 
 Feel free to contribute by submitting issues or pull requests. And please ensure that all pull requests are checked out from the `main` branch.
 
+## Related Projects  
+- [Austin Tab](https://github.com/austin17ng/austin-tab) –🐑 An adaptive and lightweight tab layout for Android 🐑.
+
+
 ## License
 
 Austin SegmentedControl is licensed under the MIT License.
