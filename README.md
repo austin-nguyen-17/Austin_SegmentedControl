@@ -3,7 +3,7 @@
 
 
 
-<img src="/images/demo.gif" alt="drawing" width="350"/>
+<img src="/images/demo_v200.gif" alt="drawing" width="350"/>
 
 ## Examples
 ### A basic example
@@ -16,8 +16,9 @@ fun Example() {
     ) {
         Spacer(Modifier.height(64.dp))
         SegmentedControl(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
             selectedIndex = index,
+		    itemWidthMode = ItemWidthMode.Proportional,
+            segmentedControlProperties = SegmentedControlPropertiesDefault.values().copy(offset = 16.dp, indicatorHorizontalPadding = 6.dp),
             onItemSelected = {
                 index = it
             },
@@ -46,34 +47,36 @@ maven { url 'https://jitpack.io' }
 
 ```
 dependencies {
-	implementation 'com.github.austin17ng:Austin_SegmentedControl:0.0.11'
+	implementation 'com.github.austin17ng:Austin_SegmentedControl:2.0.0'
 }
 ```
  
-## Default attributes
+## Default properties
 
 ```
 
-object SegmentedButtonPropertiesDefault {
+object SegmentedControlPropertiesDefault {
     @Composable
-    fun colors() = SegmentedButtonProperties(
+    fun values() = SegmentedControlProperties(
+        offset = 0.dp,
         containerBackgroundColor = Color(0x1F767680),
         containerPadding = 2.dp,
         containerCornerRadius = 9.dp,
-        buttonElevation = 12.dp,
-        buttonShadowColor = Color(0xFF000000),
-        buttonBorderWidth = 0.5.dp,
-        buttonBorderColor = Color(0x0A000000),
-        buttonColor = Color(0xFFFFFFFF),
-        buttonRadius = 7.dp,
-        buttonVerticalPadding = 6.dp,
-        buttonHorizontalPadding = 12.dp,
+        indicatorElevation = 12.dp,
+        indicatorShadowColor = Color(0xFF000000),
+        indicatorBorderWidth = 0.5.dp,
+        indicatorBorderColor = Color(0x0A000000),
+        indicatorColor = Color(0xFFFFFFFF),
+        indicatorRadius = 7.dp,
+        indicatorVerticalPadding = 6.dp,
+        indicatorHorizontalPadding = 12.dp,
         animationDurationMillis = 500,
         labelFontSize = 12.sp,
         labelFontWeight = FontWeight.Medium,
         labelColor = Color(0xFF000000),
         easing = FastOutSlowInEasing,
     )
+}
 
 ```
 
@@ -81,7 +84,7 @@ object SegmentedButtonPropertiesDefault {
 
 Feel free to contribute by submitting issues or pull requests. And please ensure that all pull requests are checked out from the `main` branch.
 
-## Related Projects  
+## Related Projects
 - [Austin Tab](https://github.com/austin17ng/austin-tab) –🐑 An adaptive and lightweight tab layout for Android 🐑.
 
 
