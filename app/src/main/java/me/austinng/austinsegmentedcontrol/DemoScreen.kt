@@ -3,16 +3,14 @@ package me.austinng.austinsegmentedcontrol
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -34,72 +32,72 @@ fun DemoScreen() {
     val scope = rememberCoroutineScope()
 
 
-    val homeItems = listOf("Home", "Stats", "Transactions").map { SegmentedControlItem(it) }
-    var selectedHomeIndex by remember { mutableIntStateOf(0) }
+    val mainItems = listOf("Home", "Stats", "Chat", "Transaction History").map { SegmentedControlItem(it) }
+    var mainIndex by remember { mutableIntStateOf(0) }
+
+    val preferenceItems = listOf("General", "Privacy", "Account").map { SegmentedControlItem(it) }
+    var preferenceIndex by remember { mutableIntStateOf(0) }
+
+    val discoveryItems = listOf("Trending", "Search", "Messages", "Alerts", "Profile", "Settings", "Explore", "Bookmarks", "Support", "About").map { SegmentedControlItem(it) }
+    var discoveryIndex by remember { mutableIntStateOf(0) }
 
     val callItems = listOf("All", "Missed").map { SegmentedControlItem(it) }
     val callPagerState = rememberPagerState(pageCount = { callItems.size })
-    var selectedCallIndex = remember { derivedStateOf { callPagerState.currentPage } }
+    var callIndex = remember { derivedStateOf { callPagerState.currentPage } }
 
     Column(
         Modifier
             .fillMaxSize()
             .background(color = Color(0xFFFFFFFF))
+            .statusBarsPadding()
     ) {
-        Spacer(Modifier.height(64.dp))
-        Text(
-            "Equal weight segmented button",
-            modifier = Modifier.padding(horizontal = 16.dp),
-            fontSize = 20.sp
-        )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(32.dp))
         SegmentedControl(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            selectedIndex = selectedHomeIndex,
+            selectedIndex = mainIndex,
             onItemSelected = {
-                selectedHomeIndex = it
+                mainIndex = it
             },
-            items = homeItems,
-            alignItem = SegmentedControlAlignItem.EQUAL_WIDTH
+            items = mainItems,
+            itemWidthMode = WidthMode.Proportional,
+            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 6.dp)
         )
-        Spacer(Modifier.height(64.dp))
-        Text(
-            "Auto align segmented button",
-            modifier = Modifier.padding(horizontal = 16.dp),
-            fontSize = 20.sp
-        )
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(32.dp))
+
         SegmentedControl(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            selectedIndex = selectedHomeIndex,
+            selectedIndex = preferenceIndex,
             onItemSelected = {
-                selectedHomeIndex = it
+                preferenceIndex = it
             },
-            items = homeItems,
-            alignItem = SegmentedControlAlignItem.AUTO_ALIGN
+            items = preferenceItems,
+            itemWidthMode = WidthMode.Equal,
+            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp)
         )
-        Spacer(Modifier.height(64.dp))
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        ) {
-            Text(text = "Recent Calls", fontSize = 20.sp)
-            Spacer(Modifier.weight(1f))
-            SegmentedControl(
-                selectedIndex = selectedCallIndex.value,
-                onItemSelected = {
-                    scope.launch {
-                        callPagerState.animateScrollToPage(it)
-                    }
-                },
-                items = callItems
-            )
-        }
-        Spacer(Modifier.height(16.dp))
+        Spacer(Modifier.height(32.dp))
+
+        SegmentedControl(
+            selectedIndex = discoveryIndex,
+            onItemSelected = {
+                discoveryIndex = it
+            },
+            items = discoveryItems,
+            itemWidthMode = WidthMode.Proportional,
+            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 32.dp)
+        )
+        Spacer(Modifier.height(32.dp))
+
+        AustinShortSegmentedControl(
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            selectedIndex = callIndex.value,
+            onItemSelected = {
+                scope.launch {
+                    callPagerState.animateScrollToPage(it)
+                }
+            },
+            items = callItems,
+            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp),
+        )
+        Spacer(Modifier.height(8.dp))
+
         HorizontalPager(
             state = callPagerState,
             modifier = Modifier.weight(1f)

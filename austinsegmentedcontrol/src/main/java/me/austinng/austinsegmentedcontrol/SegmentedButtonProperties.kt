@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.takeOrElse
 
 @Immutable
 class SegmentedButtonProperties constructor(
+    val offset: Dp,
     val containerBackgroundColor: Color,
     val containerPadding: Dp,
     val containerCornerRadius: Dp,
@@ -30,6 +31,7 @@ class SegmentedButtonProperties constructor(
     val easing: Easing,
 ) {
     fun copy(
+        offset: Dp = this.offset,
         containerBackgroundColor: Color = this.containerBackgroundColor,
         containerPadding: Dp = this.containerPadding,
         containerCornerRadius: Dp = this.containerCornerRadius,
@@ -47,6 +49,7 @@ class SegmentedButtonProperties constructor(
         labelColor: Color = this.labelColor,
         easing: Easing = this.easing,
     ) = SegmentedButtonProperties(
+        offset = offset.takeOrElse { this.offset },
         containerBackgroundColor = containerBackgroundColor.takeOrElse { this.containerBackgroundColor },
         containerPadding = containerPadding.takeOrElse { this.containerPadding },
         containerCornerRadius = containerCornerRadius.takeOrElse { this.containerCornerRadius },
@@ -68,6 +71,7 @@ class SegmentedButtonProperties constructor(
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || other !is SegmentedButtonProperties) return false
+        if (offset != other.offset) return false
         if (containerBackgroundColor != other.containerBackgroundColor) return false
         if (containerPadding != other.containerPadding) return false
         if (containerCornerRadius != other.containerCornerRadius) return false
@@ -89,6 +93,7 @@ class SegmentedButtonProperties constructor(
 
     override fun hashCode(): Int {
         var result = containerBackgroundColor.hashCode()
+        result = 31 * result + offset.hashCode()
         result = 31 * result + containerPadding.hashCode()
         result = 31 * result + containerCornerRadius.hashCode()
         result = 31 * result + buttonElevation.hashCode()

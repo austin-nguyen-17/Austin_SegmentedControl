@@ -1,169 +1,148 @@
 package me.austinng.austinsegmentedcontrol
 
-import androidx.compose.animation.core.Easing
-import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.composed
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.SubcomposeLayout
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastZip
+import kotlin.math.roundToInt
 
 @Composable
 fun SegmentedControl(
     modifier: Modifier = Modifier,
-    segmentedButtonProperties: SegmentedButtonProperties = SegmentedButtonPropertiesDefault.colors(),
-    alignItem: SegmentedControlAlignItem = SegmentedControlAlignItem.AUTO_ALIGN,
-    selectedIndex: Int,
-    onItemSelected: (Int) -> Unit,
-    items: List<SegmentedControlItem>,
-) {
-    SegmentedControlImpl(
-        modifier = modifier
-            .background(
-                color = segmentedButtonProperties.containerBackgroundColor,
-                shape = RoundedCornerShape(segmentedButtonProperties.containerCornerRadius)
-            )
-            .padding(segmentedButtonProperties.containerPadding),
-        segmentedButtonProperties = segmentedButtonProperties,
-        alignItemWidth = alignItem,
-        selectedIndex = selectedIndex,
-        items = items,
-        onItemSelected = onItemSelected
-    )
-}
-
-internal fun Modifier.buttonOffset(
-    indicatorPosition: SelectedButtonPosition,
-    animationDurationMillis: Int,
-    easing: Easing
-): Modifier =
-    composed {
-        val indicatorWidth by animateDpAsState(
-            indicatorPosition.width,
-            animationSpec = tween(durationMillis = animationDurationMillis, easing = easing)
-        )
-        val indicatorOffset by animateDpAsState(
-            indicatorPosition.left,
-            animationSpec = tween(durationMillis = animationDurationMillis, easing = easing)
-        )
-        fillMaxWidth()
-            .wrapContentSize(Alignment.BottomStart)
-            .offset(x = indicatorOffset)
-            .width(indicatorWidth)
-    }
-
-@Composable
-internal fun SegmentedControlImpl(
-    modifier: Modifier = Modifier,
+    scrollState: ScrollState = rememberScrollState(),
     segmentedButtonProperties: SegmentedButtonProperties,
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
-    alignItemWidth: SegmentedControlAlignItem,
+    itemWidthMode: WidthMode,
     items: List<SegmentedControlItem>,
 ) {
-    val items: @Composable () -> Unit = {
-        items.mapIndexed { index, item ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier
-                    .noRippleClickable {
-                        onItemSelected(index)
-                    }
-                    .padding(
-                        vertical = segmentedButtonProperties.buttonVerticalPadding,
-                        horizontal = segmentedButtonProperties.buttonHorizontalPadding
-                    )
-            ) {
-                BasicText(
-                    item.title,
-                    style = TextStyle(
-                        color = segmentedButtonProperties.labelColor,
-                        fontSize = segmentedButtonProperties.labelFontSize,
-                        fontWeight = segmentedButtonProperties.labelFontWeight,
-                        textAlign = TextAlign.Center
-                    )
-                )
-            }
-        }
+    var itemMiddles by remember { mutableStateOf(listOf<Int>()) }
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val scrollOffset = with(LocalDensity.current) {
+        val halfScreen = screenWidth.toPx() / 2
+        val leftPadding = segmentedButtonProperties.offset.toPx() + segmentedButtonProperties.containerPadding.toPx()
+        (halfScreen - leftPadding).roundToInt()
     }
-    val indicator: @Composable (indicatorPositions: List<SelectedButtonPosition>) -> Unit = {
-        Box(
-            modifier = Modifier
-                .buttonOffset(
-                    it[selectedIndex],
-                    animationDurationMillis = segmentedButtonProperties.animationDurationMillis,
-                    easing = segmentedButtonProperties.easing
-                )
-                .fillMaxSize()
-                .shadow(
-                    shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius),
-                    elevation = segmentedButtonProperties.buttonElevation,
-                    ambientColor = segmentedButtonProperties.buttonShadowColor,
-                    spotColor = segmentedButtonProperties.buttonShadowColor
-                )
-                .border(
-                    segmentedButtonProperties.buttonBorderWidth,
-                    color = segmentedButtonProperties.buttonBorderColor,
-                    shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius)
-                )
-                .background(
-                    shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius),
-                    color = segmentedButtonProperties.buttonColor
-                )
+
+    LaunchedEffect(selectedIndex) {
+        val target = itemMiddles[selectedIndex] - scrollOffset
+        scrollState.animateScrollTo(
+            target,
+            animationSpec = tween(
+                durationMillis = segmentedButtonProperties.animationDurationMillis,
+                easing = segmentedButtonProperties.easing
+            )
         )
     }
 
+    val itemUis: @Composable () -> Unit = {
+        items.mapIndexed { index, item ->
+            SegmentedControlItemUi(
+                item = item,
+                properties = segmentedButtonProperties,
+                onClick = { onItemSelected(index) }
+            )
+        }
+    }
 
-    SubcomposeLayout(modifier) { constraints ->
+    val indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit =
+        segmentedControlIndicator(selectedIndex, segmentedButtonProperties)
+
+    Row(
+        modifier
+            .fillMaxWidth()
+            .horizontalScroll(scrollState)
+            .padding(segmentedButtonProperties.offset)
+    ) {
+        SegmentedControlContainer(
+            color = segmentedButtonProperties.containerBackgroundColor,
+            radius = segmentedButtonProperties.containerCornerRadius,
+            padding = segmentedButtonProperties.containerPadding,
+            screenWidthExcludePadding = screenWidth - segmentedButtonProperties.offset * 2 - segmentedButtonProperties.containerPadding * 2,
+            widthMode = itemWidthMode,
+            items = itemUis,
+            indicator = indicator,
+            onItemCentersCalculated = {
+                itemMiddles = it
+            }
+        )
+    }
+}
+
+
+
+@Composable
+private fun SegmentedControlContainer(
+    color: Color,
+    radius: Dp,
+    padding: Dp,
+    screenWidthExcludePadding: Dp,
+    widthMode: WidthMode? = null,
+    items: @Composable () -> Unit,
+    indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit,
+    onItemCentersCalculated: (List<Int>) -> Unit,
+) {
+    SubcomposeLayout(
+        Modifier
+            .background(
+                color = color,
+                shape = RoundedCornerShape(radius)
+            )
+            .padding(padding)
+    ) { constraints ->
         val itemMeasurables = subcompose(ItemsSlot, items)
 
-        val containerHeight = itemMeasurables.maxOf { it.maxIntrinsicHeight(constraints.maxWidth) }
-        val labelWidths = itemMeasurables.fastMap {
-            it.maxIntrinsicWidth(containerHeight)
+        val containerHeight = itemMeasurables.maxOf { it.maxIntrinsicHeight(Constraints.Infinity) }
+        val labelWidths = itemMeasurables.fastMap { it.maxIntrinsicWidth(containerHeight) }
+        val availableWidthForItems = screenWidthExcludePadding.roundToPx()
+
+        val allocation = when {
+            availableWidthForItems < labelWidths.sum() -> Allocation.WRAP
+            widthMode == WidthMode.Equal -> Allocation.EQUAL
+            else -> Allocation.PROPORTION
         }
 
-        val itemsTotalWidth = labelWidths.sum()
-        val containerWidth = maxOf(constraints.minWidth, itemsTotalWidth)
-
-        val itemWidths = when (alignItemWidth) {
-            SegmentedControlAlignItem.EQUAL_WIDTH -> {
+        val itemWidths = when (allocation) {
+            Allocation.EQUAL -> {
                 List(itemMeasurables.size) {
-                    (containerWidth / itemMeasurables.size)
+                    (availableWidthForItems / itemMeasurables.size)
                 }
             }
 
-            SegmentedControlAlignItem.AUTO_ALIGN -> {
-                val remainingWidth = containerWidth - labelWidths.sum()
+            Allocation.PROPORTION -> {
+                val remainingWidth = availableWidthForItems - labelWidths.sum()
                 val space = remainingWidth / (labelWidths.size * 2)
                 labelWidths.fastMap { textWidth ->
                     textWidth + space * 2
                 }
             }
+
+            Allocation.WRAP -> {
+                labelWidths
+            }
         }
+        val itemTotalWidth = itemWidths.sum()
 
 
         val itemPlaceables = itemMeasurables.fastZip(itemWidths) { measurable, itemWidth ->
@@ -172,19 +151,20 @@ internal fun SegmentedControlImpl(
             )
         }
 
-        val lefts = listOf(0) + itemPlaceables.map { it.width }.runningReduce { sum, left ->
-            sum + left
-        }.dropLast(1)
-        val buttonPositions = itemPlaceables.zip(lefts) { item, left ->
-            SelectedButtonPosition(left.toDp(), item.width.toDp())
+        val lefts = itemWidths.runningFold(0) { acc, w -> acc + w }.dropLast(1)
+
+        val buttonPositions = itemPlaceables.fastZip(lefts) { item, left ->
+            ButtonPosition(left.toDp(), item.width.toDp())
         }
 
-        layout(containerWidth, containerHeight) {
+        val centers = itemWidths.fastZip(lefts) { w, l -> l + w / 2 }
+        onItemCentersCalculated(centers)
+
+        layout(itemTotalWidth, containerHeight) {
             subcompose(ButtonSlot) {
                 indicator(buttonPositions)
             }.fastMap {
-                it.measure(Constraints.fixed(containerWidth, containerHeight))
-                    .place(0, 0)
+                it.measure(Constraints.fixed(itemTotalWidth, containerHeight)).place(0, 0)
             }
 
             itemPlaceables.fastZip(lefts) { itemPlaceable, left ->
@@ -193,12 +173,3 @@ internal fun SegmentedControlImpl(
         }
     }
 }
-
-private object ItemsSlot
-private object ButtonSlot
-
-@Immutable
-internal data class SelectedButtonPosition(
-    val left: Dp,
-    val width: Dp
-)

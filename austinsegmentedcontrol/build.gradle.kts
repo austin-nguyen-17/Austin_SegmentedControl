@@ -53,7 +53,7 @@ publishing {
         register<MavenPublication>("release") {
             groupId = "io.github.austin17ng"
             artifactId = "austinsegmentedcontrol"
-            version = "0.0.11"
+            version = "2.0.0"
 
             afterEvaluate {
                 from(components["release"])

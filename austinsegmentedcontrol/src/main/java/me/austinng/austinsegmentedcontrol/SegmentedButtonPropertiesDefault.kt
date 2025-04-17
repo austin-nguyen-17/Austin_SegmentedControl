@@ -9,7 +9,8 @@ import androidx.compose.ui.unit.sp
 
 object SegmentedButtonPropertiesDefault {
     @Composable
-    fun colors() = SegmentedButtonProperties(
+    fun values() = SegmentedButtonProperties(
+        offset = 0.dp,
         containerBackgroundColor = Color(0x1F767680),
         containerPadding = 2.dp,
         containerCornerRadius = 9.dp,
