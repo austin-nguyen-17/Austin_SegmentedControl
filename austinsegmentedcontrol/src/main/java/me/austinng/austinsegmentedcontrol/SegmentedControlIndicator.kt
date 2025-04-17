@@ -12,30 +12,30 @@ import androidx.compose.ui.draw.shadow
 @Composable
 internal fun segmentedControlIndicator(
     selectedIndex: Int,
-    segmentedButtonProperties: SegmentedButtonProperties
-): @Composable (indicatorPositions: List<ButtonPosition>) -> Unit = {
+    segmentedControlProperties: SegmentedControlProperties
+): @Composable (indicatorPositions: List<IndicatorPosition>) -> Unit = {
     Box(
         modifier = Modifier
-            .buttonOffset(
+            .indicatorOffset(
                 it[selectedIndex],
-                animationDurationMillis = segmentedButtonProperties.animationDurationMillis,
-                easing = segmentedButtonProperties.easing
+                animationDurationMillis = segmentedControlProperties.animationDurationMillis,
+                easing = segmentedControlProperties.easing
             )
             .fillMaxSize()
             .shadow(
-                shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius),
-                elevation = segmentedButtonProperties.buttonElevation,
-                ambientColor = segmentedButtonProperties.buttonShadowColor,
-                spotColor = segmentedButtonProperties.buttonShadowColor
+                shape = RoundedCornerShape(segmentedControlProperties.indicatorRadius),
+                elevation = segmentedControlProperties.indicatorElevation,
+                ambientColor = segmentedControlProperties.indicatorShadowColor,
+                spotColor = segmentedControlProperties.indicatorShadowColor
             )
             .border(
-                segmentedButtonProperties.buttonBorderWidth,
-                color = segmentedButtonProperties.buttonBorderColor,
-                shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius)
+                segmentedControlProperties.indicatorBorderWidth,
+                color = segmentedControlProperties.indicatorBorderColor,
+                shape = RoundedCornerShape(segmentedControlProperties.indicatorRadius)
             )
             .background(
-                shape = RoundedCornerShape(segmentedButtonProperties.buttonRadius),
-                color = segmentedButtonProperties.buttonColor
+                shape = RoundedCornerShape(segmentedControlProperties.indicatorRadius),
+                color = segmentedControlProperties.indicatorColor
             )
     )
 }

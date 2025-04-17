@@ -24,8 +24,8 @@ internal fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = compose
     }
 }
 
-internal fun Modifier.buttonOffset(
-    indicatorPosition: ButtonPosition,
+internal fun Modifier.indicatorOffset(
+    indicatorPosition: IndicatorPosition,
     animationDurationMillis: Int,
     easing: Easing
 ): Modifier =
@@ -46,10 +46,10 @@ internal fun Modifier.buttonOffset(
 
 
 internal object ItemsSlot
-internal object ButtonSlot
+internal object IndicatorSlot
 
 @Immutable
-internal data class ButtonPosition(
+internal data class IndicatorPosition(
     val left: Dp,
     val width: Dp
 )

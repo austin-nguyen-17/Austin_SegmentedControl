@@ -31,27 +31,27 @@ import kotlin.math.roundToInt
 fun SegmentedControl(
     modifier: Modifier = Modifier,
     scrollState: ScrollState = rememberScrollState(),
-    segmentedButtonProperties: SegmentedButtonProperties,
+    segmentedControlProperties: SegmentedControlProperties,
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
-    itemWidthMode: WidthMode,
+    itemWidthMode: ItemWidthMode,
     items: List<SegmentedControlItem>,
 ) {
-    var itemMiddles by remember { mutableStateOf(listOf<Int>()) }
+    var centers by remember { mutableStateOf(listOf<Int>()) }
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val scrollOffset = with(LocalDensity.current) {
         val halfScreen = screenWidth.toPx() / 2
-        val leftPadding = segmentedButtonProperties.offset.toPx() + segmentedButtonProperties.containerPadding.toPx()
+        val leftPadding = segmentedControlProperties.offset.toPx() + segmentedControlProperties.containerPadding.toPx()
         (halfScreen - leftPadding).roundToInt()
     }
 
     LaunchedEffect(selectedIndex) {
-        val target = itemMiddles[selectedIndex] - scrollOffset
+        val target = centers[selectedIndex] - scrollOffset
         scrollState.animateScrollTo(
             target,
             animationSpec = tween(
-                durationMillis = segmentedButtonProperties.animationDurationMillis,
-                easing = segmentedButtonProperties.easing
+                durationMillis = segmentedControlProperties.animationDurationMillis,
+                easing = segmentedControlProperties.easing
             )
         )
     }
@@ -60,31 +60,31 @@ fun SegmentedControl(
         items.mapIndexed { index, item ->
             SegmentedControlItemUi(
                 item = item,
-                properties = segmentedButtonProperties,
+                properties = segmentedControlProperties,
                 onClick = { onItemSelected(index) }
             )
         }
     }
 
-    val indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit =
-        segmentedControlIndicator(selectedIndex, segmentedButtonProperties)
+    val indicator: @Composable (indicatorPositions: List<IndicatorPosition>) -> Unit =
+        segmentedControlIndicator(selectedIndex, segmentedControlProperties)
 
     Row(
         modifier
             .fillMaxWidth()
             .horizontalScroll(scrollState)
-            .padding(segmentedButtonProperties.offset)
+            .padding(segmentedControlProperties.offset)
     ) {
         SegmentedControlContainer(
-            color = segmentedButtonProperties.containerBackgroundColor,
-            radius = segmentedButtonProperties.containerCornerRadius,
-            padding = segmentedButtonProperties.containerPadding,
-            screenWidthExcludePadding = screenWidth - segmentedButtonProperties.offset * 2 - segmentedButtonProperties.containerPadding * 2,
-            widthMode = itemWidthMode,
+            color = segmentedControlProperties.containerBackgroundColor,
+            radius = segmentedControlProperties.containerCornerRadius,
+            padding = segmentedControlProperties.containerPadding,
+            screenWidthExcludePadding = screenWidth - segmentedControlProperties.offset * 2 - segmentedControlProperties.containerPadding * 2,
+            itemWidthMode = itemWidthMode,
             items = itemUis,
             indicator = indicator,
             onItemCentersCalculated = {
-                itemMiddles = it
+                centers = it
             }
         )
     }
@@ -98,9 +98,9 @@ private fun SegmentedControlContainer(
     radius: Dp,
     padding: Dp,
     screenWidthExcludePadding: Dp,
-    widthMode: WidthMode? = null,
+    itemWidthMode: ItemWidthMode? = null,
     items: @Composable () -> Unit,
-    indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit,
+    indicator: @Composable (indicatorPositions: List<IndicatorPosition>) -> Unit,
     onItemCentersCalculated: (List<Int>) -> Unit,
 ) {
     SubcomposeLayout(
@@ -119,7 +119,7 @@ private fun SegmentedControlContainer(
 
         val allocation = when {
             availableWidthForItems < labelWidths.sum() -> Allocation.WRAP
-            widthMode == WidthMode.Equal -> Allocation.EQUAL
+            itemWidthMode == ItemWidthMode.Equal -> Allocation.EQUAL
             else -> Allocation.PROPORTION
         }
 
@@ -153,16 +153,16 @@ private fun SegmentedControlContainer(
 
         val lefts = itemWidths.runningFold(0) { acc, w -> acc + w }.dropLast(1)
 
-        val buttonPositions = itemPlaceables.fastZip(lefts) { item, left ->
-            ButtonPosition(left.toDp(), item.width.toDp())
+        val indicatorPositions = itemPlaceables.fastZip(lefts) { item, left ->
+            IndicatorPosition(left.toDp(), item.width.toDp())
         }
 
         val centers = itemWidths.fastZip(lefts) { w, l -> l + w / 2 }
         onItemCentersCalculated(centers)
 
         layout(itemTotalWidth, containerHeight) {
-            subcompose(ButtonSlot) {
-                indicator(buttonPositions)
+            subcompose(IndicatorSlot) {
+                indicator(indicatorPositions)
             }.fastMap {
                 it.measure(Constraints.fixed(itemTotalWidth, containerHeight)).place(0, 0)
             }

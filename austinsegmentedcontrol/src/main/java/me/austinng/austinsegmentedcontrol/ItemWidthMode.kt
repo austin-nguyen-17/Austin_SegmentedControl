@@ -4,9 +4,9 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.Stable
 
 @Immutable
-sealed class WidthMode {
+sealed class ItemWidthMode {
     @Stable
-    object Equal: WidthMode()
+    object Equal: ItemWidthMode()
     @Stable
-    object Proportional: WidthMode()
+    object Proportional: ItemWidthMode()
 }

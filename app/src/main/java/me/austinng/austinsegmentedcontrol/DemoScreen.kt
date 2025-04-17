@@ -58,8 +58,8 @@ fun DemoScreen() {
                 mainIndex = it
             },
             items = mainItems,
-            itemWidthMode = WidthMode.Proportional,
-            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 6.dp)
+            itemWidthMode = ItemWidthMode.Proportional,
+            segmentedControlProperties = SegmentedControlPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 6.dp)
         )
         Spacer(Modifier.height(32.dp))
 
@@ -69,8 +69,8 @@ fun DemoScreen() {
                 preferenceIndex = it
             },
             items = preferenceItems,
-            itemWidthMode = WidthMode.Equal,
-            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp)
+            itemWidthMode = ItemWidthMode.Equal,
+            segmentedControlProperties = SegmentedControlPropertiesDefault.values().copy(offset = 16.dp)
         )
         Spacer(Modifier.height(32.dp))
 
@@ -80,8 +80,8 @@ fun DemoScreen() {
                 discoveryIndex = it
             },
             items = discoveryItems,
-            itemWidthMode = WidthMode.Proportional,
-            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 32.dp)
+            itemWidthMode = ItemWidthMode.Proportional,
+            segmentedControlProperties = SegmentedControlPropertiesDefault.values().copy(offset = 16.dp, buttonHorizontalPadding = 32.dp)
         )
         Spacer(Modifier.height(32.dp))
 
@@ -94,7 +94,7 @@ fun DemoScreen() {
                 }
             },
             items = callItems,
-            segmentedButtonProperties = SegmentedButtonPropertiesDefault.values().copy(offset = 16.dp),
+            segmentedControlProperties = SegmentedControlPropertiesDefault.values().copy(offset = 16.dp),
         )
         Spacer(Modifier.height(8.dp))
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.util.fastZip
 @Composable
 fun AustinShortSegmentedControl(
     modifier: Modifier = Modifier,
-    segmentedButtonProperties: SegmentedButtonProperties = SegmentedButtonPropertiesDefault.values(),
+    segmentedControlProperties: SegmentedControlProperties = SegmentedControlPropertiesDefault.values(),
     selectedIndex: Int,
     onItemSelected: (Int) -> Unit,
     items: List<SegmentedControlItem>,
@@ -25,23 +25,23 @@ fun AustinShortSegmentedControl(
         items.mapIndexed { index, item ->
             SegmentedControlItemUi(
                 item = item,
-                properties = segmentedButtonProperties,
+                properties = segmentedControlProperties,
                 onClick = { onItemSelected(index) }
             )
         }
     }
 
-    val indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit =
-        segmentedControlIndicator(selectedIndex, segmentedButtonProperties)
+    val indicator: @Composable (indicatorPositions: List<IndicatorPosition>) -> Unit =
+        segmentedControlIndicator(selectedIndex, segmentedControlProperties)
 
     Row(
         modifier
-            .padding(segmentedButtonProperties.offset)
+            .padding(segmentedControlProperties.offset)
     ) {
         ShortSegmentedControlContainer(
-            color = segmentedButtonProperties.containerBackgroundColor,
-            radius = segmentedButtonProperties.containerCornerRadius,
-            padding = segmentedButtonProperties.containerPadding,
+            color = segmentedControlProperties.containerBackgroundColor,
+            radius = segmentedControlProperties.containerCornerRadius,
+            padding = segmentedControlProperties.containerPadding,
             items = itemUis,
             indicator = indicator,
         )
@@ -55,7 +55,7 @@ private fun ShortSegmentedControlContainer(
     radius: Dp,
     padding: Dp,
     items: @Composable () -> Unit,
-    indicator: @Composable (indicatorPositions: List<ButtonPosition>) -> Unit,
+    indicator: @Composable (indicatorPositions: List<IndicatorPosition>) -> Unit,
 ) {
     SubcomposeLayout(
         Modifier
@@ -84,13 +84,13 @@ private fun ShortSegmentedControlContainer(
 
         val lefts = itemWidths.runningFold(0) { acc, w -> acc + w }.dropLast(1)
 
-        val buttonPositions = itemPlaceables.fastZip(lefts) { item, left ->
-            ButtonPosition(left.toDp(), item.width.toDp())
+        val indicatorPositions = itemPlaceables.fastZip(lefts) { item, left ->
+            IndicatorPosition(left.toDp(), item.width.toDp())
         }
 
         layout(itemTotalWidth, containerHeight) {
-            subcompose(ButtonSlot) {
-                indicator(buttonPositions)
+            subcompose(IndicatorSlot) {
+                indicator(indicatorPositions)
             }.fastMap {
                 it.measure(Constraints.fixed(itemTotalWidth, containerHeight)).place(0, 0)
             }

@@ -7,21 +7,21 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-object SegmentedButtonPropertiesDefault {
+object SegmentedControlPropertiesDefault {
     @Composable
-    fun values() = SegmentedButtonProperties(
+    fun values() = SegmentedControlProperties(
         offset = 0.dp,
         containerBackgroundColor = Color(0x1F767680),
         containerPadding = 2.dp,
         containerCornerRadius = 9.dp,
-        buttonElevation = 12.dp,
-        buttonShadowColor = Color(0xFF000000),
-        buttonBorderWidth = 0.5.dp,
-        buttonBorderColor = Color(0x0A000000),
-        buttonColor = Color(0xFFFFFFFF),
-        buttonRadius = 7.dp,
-        buttonVerticalPadding = 6.dp,
-        buttonHorizontalPadding = 12.dp,
+        indicatorElevation = 12.dp,
+        indicatorShadowColor = Color(0xFF000000),
+        indicatorBorderWidth = 0.5.dp,
+        indicatorBorderColor = Color(0x0A000000),
+        indicatorColor = Color(0xFFFFFFFF),
+        indicatorRadius = 7.dp,
+        indicatorVerticalPadding = 6.dp,
+        indicatorHorizontalPadding = 12.dp,
         animationDurationMillis = 500,
         labelFontSize = 12.sp,
         labelFontWeight = FontWeight.Medium,

@@ -11,19 +11,19 @@ import androidx.compose.ui.unit.takeOrElse
 
 
 @Immutable
-class SegmentedButtonProperties constructor(
+class SegmentedControlProperties constructor(
     val offset: Dp,
     val containerBackgroundColor: Color,
     val containerPadding: Dp,
     val containerCornerRadius: Dp,
-    val buttonElevation: Dp,
-    val buttonShadowColor: Color,
-    val buttonBorderWidth: Dp,
-    val buttonBorderColor: Color,
-    val buttonColor: Color,
-    val buttonRadius: Dp,
-    val buttonVerticalPadding: Dp,
-    val buttonHorizontalPadding: Dp,
+    val indicatorElevation: Dp,
+    val indicatorShadowColor: Color,
+    val indicatorBorderWidth: Dp,
+    val indicatorBorderColor: Color,
+    val indicatorColor: Color,
+    val indicatorRadius: Dp,
+    val indicatorVerticalPadding: Dp,
+    val indicatorHorizontalPadding: Dp,
     val animationDurationMillis: Int,
     val labelFontSize: TextUnit,
     val labelFontWeight: FontWeight,
@@ -35,32 +35,32 @@ class SegmentedButtonProperties constructor(
         containerBackgroundColor: Color = this.containerBackgroundColor,
         containerPadding: Dp = this.containerPadding,
         containerCornerRadius: Dp = this.containerCornerRadius,
-        buttonElevation: Dp = this.buttonElevation,
-        buttonShadowColor: Color = this.buttonShadowColor,
-        buttonBorderWidth: Dp = this.buttonBorderWidth,
-        buttonBorderColor: Color = this.buttonBorderColor,
-        buttonColor: Color = this.buttonColor,
-        buttonRadius: Dp = this.buttonRadius,
-        buttonVerticalPadding: Dp = this.buttonVerticalPadding,
-        buttonHorizontalPadding: Dp = this.buttonHorizontalPadding,
+        indicatorElevation: Dp = this.indicatorElevation,
+        indicatorShadowColor: Color = this.indicatorShadowColor,
+        indicatorBorderWidth: Dp = this.indicatorBorderWidth,
+        indicatorBorderColor: Color = this.indicatorBorderColor,
+        indicatorColor: Color = this.indicatorColor,
+        indicatorRadius: Dp = this.indicatorRadius,
+        indicatorVerticalPadding: Dp = this.indicatorVerticalPadding,
+        indicatorHorizontalPadding: Dp = this.indicatorHorizontalPadding,
         animationDurationMillis: Int = this.animationDurationMillis,
         labelFontSize: TextUnit = this.labelFontSize,
         labelFontWeight: FontWeight = this.labelFontWeight,
         labelColor: Color = this.labelColor,
         easing: Easing = this.easing,
-    ) = SegmentedButtonProperties(
+    ) = SegmentedControlProperties(
         offset = offset.takeOrElse { this.offset },
         containerBackgroundColor = containerBackgroundColor.takeOrElse { this.containerBackgroundColor },
         containerPadding = containerPadding.takeOrElse { this.containerPadding },
         containerCornerRadius = containerCornerRadius.takeOrElse { this.containerCornerRadius },
-        buttonElevation = buttonElevation.takeOrElse { this.buttonElevation },
-        buttonShadowColor = buttonShadowColor.takeOrElse { this.buttonShadowColor },
-        buttonBorderWidth = buttonBorderWidth.takeOrElse { this.buttonBorderWidth },
-        buttonBorderColor = buttonBorderColor.takeOrElse { this.buttonBorderColor },
-        buttonColor = buttonColor.takeOrElse { this.buttonColor },
-        buttonRadius = buttonRadius.takeOrElse { this.buttonRadius },
-        buttonVerticalPadding = buttonVerticalPadding.takeOrElse { this.buttonVerticalPadding },
-        buttonHorizontalPadding = buttonHorizontalPadding.takeOrElse { this.buttonHorizontalPadding },
+        indicatorElevation = indicatorElevation.takeOrElse { this.indicatorElevation },
+        indicatorShadowColor = indicatorShadowColor.takeOrElse { this.indicatorShadowColor },
+        indicatorBorderWidth = indicatorBorderWidth.takeOrElse { this.indicatorBorderWidth },
+        indicatorBorderColor = indicatorBorderColor.takeOrElse { this.indicatorBorderColor },
+        indicatorColor = indicatorColor.takeOrElse { this.indicatorColor },
+        indicatorRadius = indicatorRadius.takeOrElse { this.indicatorRadius },
+        indicatorVerticalPadding = indicatorVerticalPadding.takeOrElse { this.indicatorVerticalPadding },
+        indicatorHorizontalPadding = indicatorHorizontalPadding.takeOrElse { this.indicatorHorizontalPadding },
         animationDurationMillis = animationDurationMillis,
         labelFontSize = labelFontSize.takeOrElse { this.labelFontSize },
         labelFontWeight = labelFontWeight,
@@ -70,19 +70,19 @@ class SegmentedButtonProperties constructor(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (other == null || other !is SegmentedButtonProperties) return false
+        if (other == null || other !is SegmentedControlProperties) return false
         if (offset != other.offset) return false
         if (containerBackgroundColor != other.containerBackgroundColor) return false
         if (containerPadding != other.containerPadding) return false
         if (containerCornerRadius != other.containerCornerRadius) return false
-        if (buttonElevation != other.buttonElevation) return false
-        if (buttonShadowColor != other.buttonShadowColor) return false
-        if (buttonBorderWidth != other.buttonBorderWidth) return false
-        if (buttonBorderColor != other.buttonBorderColor) return false
-        if (buttonColor != other.buttonColor) return false
-        if (buttonRadius != other.buttonRadius) return false
-        if (buttonVerticalPadding != other.buttonVerticalPadding) return false
-        if (buttonHorizontalPadding != other.buttonHorizontalPadding) return false
+        if (indicatorElevation != other.indicatorElevation) return false
+        if (indicatorShadowColor != other.indicatorShadowColor) return false
+        if (indicatorBorderWidth != other.indicatorBorderWidth) return false
+        if (indicatorBorderColor != other.indicatorBorderColor) return false
+        if (indicatorColor != other.indicatorColor) return false
+        if (indicatorRadius != other.indicatorRadius) return false
+        if (indicatorVerticalPadding != other.indicatorVerticalPadding) return false
+        if (indicatorHorizontalPadding != other.indicatorHorizontalPadding) return false
         if (animationDurationMillis != other.animationDurationMillis) return false
         if (labelFontSize != other.labelFontSize) return false
         if (labelFontWeight != other.labelFontWeight) return false
@@ -96,14 +96,14 @@ class SegmentedButtonProperties constructor(
         result = 31 * result + offset.hashCode()
         result = 31 * result + containerPadding.hashCode()
         result = 31 * result + containerCornerRadius.hashCode()
-        result = 31 * result + buttonElevation.hashCode()
-        result = 31 * result + buttonShadowColor.hashCode()
-        result = 31 * result + buttonBorderWidth.hashCode()
-        result = 31 * result + buttonBorderColor.hashCode()
-        result = 31 * result + buttonColor.hashCode()
-        result = 31 * result + buttonRadius.hashCode()
-        result = 31 * result + buttonVerticalPadding.hashCode()
-        result = 31 * result + buttonHorizontalPadding.hashCode()
+        result = 31 * result + indicatorElevation.hashCode()
+        result = 31 * result + indicatorShadowColor.hashCode()
+        result = 31 * result + indicatorBorderWidth.hashCode()
+        result = 31 * result + indicatorBorderColor.hashCode()
+        result = 31 * result + indicatorColor.hashCode()
+        result = 31 * result + indicatorRadius.hashCode()
+        result = 31 * result + indicatorVerticalPadding.hashCode()
+        result = 31 * result + indicatorHorizontalPadding.hashCode()
         result = 31 * result + animationDurationMillis.hashCode()
         result = 31 * result + labelFontSize.hashCode()
         result = 31 * result + labelFontWeight.hashCode()

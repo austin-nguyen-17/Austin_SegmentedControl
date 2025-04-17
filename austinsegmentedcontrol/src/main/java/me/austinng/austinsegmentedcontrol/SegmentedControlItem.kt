@@ -15,7 +15,7 @@ data class SegmentedControlItem(val title: String)
 @Composable
 internal fun SegmentedControlItemUi(
     item: SegmentedControlItem,
-    properties: SegmentedButtonProperties,
+    properties: SegmentedControlProperties,
     onClick: () -> Unit
 ) {
     Row(
@@ -26,8 +26,8 @@ internal fun SegmentedControlItemUi(
                 onClick()
             }
             .padding(
-                vertical = properties.buttonVerticalPadding,
-                horizontal = properties.buttonHorizontalPadding
+                vertical = properties.indicatorVerticalPadding,
+                horizontal = properties.indicatorHorizontalPadding
             )
     ) {
         BasicText(
