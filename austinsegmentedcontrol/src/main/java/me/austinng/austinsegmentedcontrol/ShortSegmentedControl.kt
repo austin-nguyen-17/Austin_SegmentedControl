@@ -14,7 +14,7 @@ import androidx.compose.ui.util.fastMap
 import androidx.compose.ui.util.fastZip
 
 @Composable
-fun AustinShortSegmentedControl(
+fun ShortSegmentedControl(
     modifier: Modifier = Modifier,
     segmentedControlProperties: SegmentedControlProperties = SegmentedControlPropertiesDefault.values(),
     selectedIndex: Int,

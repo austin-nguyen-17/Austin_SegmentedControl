@@ -85,7 +85,7 @@ fun DemoScreen() {
         )
         Spacer(Modifier.height(32.dp))
 
-        AustinShortSegmentedControl(
+        ShortSegmentedControl(
             modifier = Modifier.align(Alignment.CenterHorizontally),
             selectedIndex = callIndex.value,
             onItemSelected = {
